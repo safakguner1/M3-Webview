@@ -19,10 +19,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
+import android.widget.Switch
 import android.graphics.Color
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 
 class MainActivity : AppCompatActivity() {
 
@@ -146,7 +147,8 @@ class MainActivity : AppCompatActivity() {
         
         val container = LinearLayout(this)
         container.orientation = LinearLayout.VERTICAL
-        val padding = (24 * resources.displayMetrics.density).toInt()
+        val density = resources.displayMetrics.density
+        val padding = (24 * density).toInt()
         container.setPadding(padding, padding, padding, padding)
 
         // URL Label
@@ -163,7 +165,11 @@ class MainActivity : AppCompatActivity() {
 
         // Spacer
         val spacer = View(this)
-        spacer.layoutParams = LinearLayout.LayoutParams(1, (20 * resources.displayMetrics.density).toInt())
+        val spacerParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, 
+            (20 * density).toInt()
+        )
+        spacer.layoutParams = spacerParams
         container.addView(spacer)
 
         // Refresh Toggle Container
@@ -174,9 +180,10 @@ class MainActivity : AppCompatActivity() {
         val refreshLabel = TextView(this)
         refreshLabel.text = "Yukarıdan Aşağı Yenileme"
         refreshLabel.textSize = 16f
-        refreshLabel.layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        val labelParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+        refreshLabel.layoutParams = labelParams
         
-        val refreshSwitch = SwitchCompat(this)
+        val refreshSwitch = Switch(this)
         refreshSwitch.isChecked = sharedPreferences.getBoolean(KEY_REFRESH_ENABLED, DEFAULT_REFRESH_ENABLED)
         
         refreshContainer.addView(refreshLabel)
